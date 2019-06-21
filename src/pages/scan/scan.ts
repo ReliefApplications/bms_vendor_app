@@ -311,8 +311,7 @@ export class ScanPage {
                     }
                 }
             ],
-            message: 'Are you sure you want to cancel this transaction ?' +
-            ' Your vouchers won\'t be considered as used and your products list will empty.'
+            message: 'Are you sure you want to clear the selected items?'
         });
         alert.present();
     }
