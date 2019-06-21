@@ -60,7 +60,15 @@
                         <ion-row class="product-details">
                             <div>
                                 <img src="{{ selectedProduct.image }}" />
-                                <h5>{{ selectedProduct.name | titlecase }}</h5>
+
+                                <h5 *ngIf="selectedProduct.name.length <= 10; else isTooLong">
+                                    {{selectedProduct.name}}
+                                </h5>
+                                <ng-template #isTooLong>
+                                    <h5>
+                                        {{selectedProduct.name.substring(0,9)}} ...
+                                    </h5>
+                                </ng-template>
                             </div>
                             <div>
                                 <i class="material-icons" matPrefix (click)="addToBasket()">add_shopping_cart</i>
