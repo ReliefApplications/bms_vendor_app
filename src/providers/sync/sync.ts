@@ -98,28 +98,21 @@ export class SyncProvider {
      * Get products from backend
      */
     getProductsFromApi() {
-        this.storage.get('country').then(country => {
-            return new Promise((resolve, reject) => {
-                const headers = new HttpHeaders().append('country', country);
-                this.http.get<Array<Product>>(this.URL_BMS_API + '/products', {headers: headers}).subscribe(products => {
-                    const productList = [];
-                    products.forEach(product => {
-                        productList.push({
-                            id: product.id,
-                            name: product.name,
-                            unit: product.unit,
-                            image: product.image
-                        });
-                    });
-                    this.products.next(productList);
-                    this.storage.set('products', productList);
-                    resolve(products);
-                }, error => {
-                    this.storage.get('products').then(products => {
-                        this.products.next(products);
-                        resolve(products);
-                    });
+        this.http.get<Array<Product>>(this.URL_BMS_API + '/products',).subscribe(products => {
+            const productList = [];
+            products.forEach(product => {
+                productList.push({
+                    id: product.id,
+                    name: product.name,
+                    unit: product.unit,
+                    image: product.image
                 });
+            });
+            this.products.next(productList);
+            this.storage.set('products', productList);
+        }, error => {
+            this.storage.get('products').then(products => {
+                this.products.next(products);
             });
         });
     }

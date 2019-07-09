@@ -17,11 +17,11 @@
                   <span>{{ product.quantity }} {{ product.product.unit }} </span>
                 </div>
               </div>
-              <span>{{ product.subTotal }}</span>
+              <span>{{ product.subTotal }}&nbsp;{{ product.currency }}</span>
             </div>
             <div class="total-line">
               <span><i mat-list-icon class="material-icons">shopping_cart</i> TOTAL</span>
-              <span class="total">{{ this.price$ | async }}</span>
+              <span class="total">{{ this.price$ | async }} {{ chosenProducts$.getValue()[0].currency }}</span>
             </div>
           </ion-col>
           <ion-col class="vouchers">
@@ -46,7 +46,7 @@
             </div>
             <div class="total-line" [ngClass]="{'error-message': priceTooHigh === true }">
               <span><i mat-list-icon class="material-icons">attach_money</i> TOTAL</span>
-              <span class="total">{{ this.vouchersTotalValue }}</span>
+              <span class="total">{{ this.vouchersTotalValue }} {{ chosenProducts$.getValue()[0].currency }}</span>
             </div>
 
           </ion-col>

@@ -82,7 +82,7 @@ import { httpInterceptorProviders } from '../interceptors/index-interceptors';
         LoginProvider,
         VoucherProvider,
         SyncProvider,
-        WsseProvider
+        WsseProvider,
     ]
 })
 export class AppModule { }

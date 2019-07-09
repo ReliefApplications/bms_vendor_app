@@ -29,7 +29,7 @@ export class CalculatorComponent implements OnInit {
         } else {
             this.valueString = number;
         }
-        this.valueChange.emit(parseFloat(this.valueString));
+        this.valueChange.emit(this.valueString);
     }
 
     /**
@@ -37,7 +37,7 @@ export class CalculatorComponent implements OnInit {
      */
     backspace() {
         this.valueString = this.valueString.substring(0, this.valueString.length - 1);
-        this.valueChange.emit(parseFloat(this.valueString));
+        this.valueChange.emit(this.valueString);
     }
 
     /**

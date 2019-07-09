@@ -6,4 +6,5 @@ export class ChosenProduct {
     quantity: number;
     price: number;
     subTotal: number;
+    currency: string;
 }

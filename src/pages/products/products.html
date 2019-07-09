@@ -24,14 +24,14 @@
                                 <img mat-list-icon src="{{item.product.image}}" />
                                 <h6 mat-line>{{item.product.name | titlecase}}</h6>
                                 <p mat-line>{{item.quantity}} {{item.product.unit}}</p>
-                                <span>{{item.subTotal}}</span>
+                                <span>{{item.subTotal}}{{item.currency}}</span>
                                 <button (click)="removeFromCart(item)" class="remove-product"><i class="material-icons">delete</i></button>
                             </mat-list-item>
                             <mat-divider></mat-divider>
                             <mat-list-item>
                                 <i mat-list-icon class="material-icons">shopping_cart</i>
                                 <h6 mat-line>Total</h6>
-                                <span>{{total}}</span>
+                                <span>{{total}}{{form.controls.currency.value}}</span>
                             </mat-list-item>
                         </mat-list>
                     </div>
@@ -60,22 +60,34 @@
                         <ion-row class="product-details">
                             <div>
                                 <img src="{{ selectedProduct.image }}" />
-                                <h5>{{ selectedProduct.name | titlecase }}</h5>
+                                <h5 *ngIf="selectedProduct.name.length <= 9; else isTooLong">
+                                    {{selectedProduct.name}}
+                                </h5>
+                                <ng-template #isTooLong>
+                                    <h5>
+                                        {{selectedProduct.name.substring(0,8)}} ...
+                                    </h5>
+                                </ng-template>
                             </div>
                             <div>
                                 <i class="material-icons" matPrefix (click)="addToBasket()">add_shopping_cart</i>
                             </div>
                         </ion-row>
                         <ion-row class="product-inputs">
-                            <form>
+                            <form [formGroup]="form" *ngIf="form">
                                 <mat-form-field class="product-form-item" [ngClass]="{'focused': typing == 'quantity'}" (click)="typing = 'quantity'">
                                     <i class="material-icons" matPrefix>shopping_cart</i>
-                                    <input type="number" matInput placeholder="Quantity" readonly [value]="quantity">
+                                    <input type="text" matInput placeholder="Quantity" readonly [value]="quantity">
                                     <span matSuffix>{{ selectedProduct.unit }}</span>
                                 </mat-form-field>
                                 <mat-form-field class="product-form-item" [ngClass]="{'focused': typing == 'price'}" (click)="typing = 'price'">
                                     <i class="material-icons" matPrefix>monetization_on</i>
-                                    <input type="number" matInput placeholder="Unit Price" readonly [value]="price">
+                                    <input type="text" matInput placeholder="Unit Price" readonly [value]="price">
+                                    <ion-select matSuffix formControlName="currency" interface="popover">
+                                        <ion-option *ngFor="let currency of currencies" [value]="currency.name">
+                                            {{currency.name}}
+                                        </ion-option>
+                                    </ion-select>
                                 </mat-form-field>
                             </form>
                         </ion-row>

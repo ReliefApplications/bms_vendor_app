@@ -27,6 +27,7 @@ export class ScanPage {
     tries: number;
     triesMessage: string;
     priceTooHigh = true;
+    scannedVouchers = [];
 
     constructor(
         public navCtrl: NavController,
@@ -62,12 +63,29 @@ export class ScanPage {
         this.barcodeScanner.scan().then(barcodeData => {
             scannedCode = barcodeData.text;
             scannedCode = scannedCode.replace(/ /g, '+');
-            this.ifHasNoPasswordGetInfo(scannedCode).then(success => {
-                this.handleScannedCode(scannedCode, success);
-            }, reject => {
-                this.alert('Format', reject);
-            });
+            if (this.scannedVouchers.includes(scannedCode)) {
+                this.alert('Voucher Already Used', 'You already used this voucher');
+            } else {
+                this.scannedVouchers.push(scannedCode);
+                this.ifHasNoPasswordGetInfo(scannedCode).then(success => {
+                    this.handleScannedCode(scannedCode, success);
+                }, reject => {
+                    this.alert('Format', reject);
+                });
+            }
         });
+
+        // scannedCode = 'AFN3*0-5-4-15';
+        // if (this.scannedVouchers.includes(scannedCode)) {
+        //     this.alert('Voucher Already Used', 'You already used this voucher');
+        // } else {
+        //     this.scannedVouchers.push(scannedCode)
+        //     this.ifHasNoPasswordGetInfo(scannedCode).then(success => {
+        //         this.handleScannedCode(scannedCode, success);
+        //     }, reject => {
+        //         this.alert('Format', reject);
+        //     });
+        // }
     }
 
     /**
@@ -210,6 +228,12 @@ export class ScanPage {
             }
 
             const productIds = [];
+
+            if (scannedCodeInfo[1] !== this.chosenProducts$.getValue()[0].currency) {
+                this.alert('Currency Mismatch', 'This voucher is not in the right currency.');
+                return;
+            }
+
             this.chosenProducts$.getValue().forEach(chosenPoduct => {
                 productIds.push(chosenPoduct.product.id);
             });
@@ -311,8 +335,7 @@ export class ScanPage {
                     }
                 }
             ],
-            message: 'Are you sure you want to cancel this transaction ?' +
-            ' Your vouchers won\'t be considered as used and your products list will empty.'
+            message: 'Are you sure you want to clear the selected items?'
         });
         alert.present();
     }

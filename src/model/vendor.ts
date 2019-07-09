@@ -54,9 +54,9 @@ export class Vendor {
     products: string[] = [];
     /**
 	 * Vendor's country
-	 * @type {number[]}
+	 * @type {string}
 	 */
-    country: string[] = undefined;
+    country: string = undefined;
     /**
 	 * Vendor's language
 	 * @type {string}

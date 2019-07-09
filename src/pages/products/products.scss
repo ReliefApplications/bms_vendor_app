@@ -11,7 +11,7 @@ page-products {
     }
 
     .mat-drawer {
-        overflow-y: unset;
+        overflow-y: scroll;
     }
 
     mat-drawer-content {
@@ -216,6 +216,13 @@ page-products {
         mat-drawer-content .product {
             width: 17vw;
             height: 17vw;
+        }
+    }
+
+    ion-select {
+        max-width: 100%;
+        button.item-cover {
+            left: auto;
         }
     }
 }
